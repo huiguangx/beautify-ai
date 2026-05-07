@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { optimizeImageWithAI, downloadImageAsDataURL } from '../utils/aiOptimize';
 
 interface AIOptimizeModalProps {
@@ -128,9 +129,11 @@ export default function AIOptimizeModal({
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">原图</h3>
               <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                <img
+                <Image
                   src={imageSrc}
                   alt="Original"
+                  width={400}
+                  height={400}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -141,9 +144,11 @@ export default function AIOptimizeModal({
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">AI优化后</h3>
               <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex items-center justify-center">
                 {previewImage ? (
-                  <img
+                  <Image
                     src={previewImage}
                     alt="Optimized"
+                    width={400}
+                    height={400}
                     className="w-full h-full object-contain"
                   />
                 ) : isProcessing ? (
