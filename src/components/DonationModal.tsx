@@ -38,10 +38,10 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
           </div>
           <div className="text-center">
             <p className="mb-3 text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words">
-              开源项目是把作者和用户紧紧联系在一起的社群，如果您希望这个项目继续发展，可以请作者喝一杯奶茶。
+              这个小工具完全免费，做出来只是想分享给同样喜欢拼豆的朋友。
             </p>
             <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words">
-              您的支持是作者把项目继续下去的动力。
+              如果用得顺手，欢迎请作者喝一杯奶茶，算是一点心意上的鼓励。
             </p>
             <div className="flex justify-center mb-4 sm:mb-5">
               <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 p-1 sm:p-2 bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30 rounded-lg shadow-md">
