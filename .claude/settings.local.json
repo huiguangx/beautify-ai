@@ -27,7 +27,13 @@
       "Bash(dir /b)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(node *)",
+      "Bash(git -C \"C:/Project/beautify-ai\" ls-files --others --cached --exclude-standard)",
+      "Bash(git -C \"C:/Project/beautify-ai\" ls-files env .env.local .env)",
+      "Bash(git *)",
+      "Bash(Select-String -Pattern \"^\\(\\\\.?env|\\\\.gitignore\\)\")",
+      "Bash(Select-Object -First 20)"
     ]
   }
 }

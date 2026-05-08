@@ -195,6 +195,10 @@ export async function optimizeImageWithAI(
  * 下载远程图片并转换为DataURL
  */
 export async function downloadImageAsDataURL(imageUrl: string): Promise<string> {
+  if (imageUrl.startsWith('data:')) {
+    return imageUrl;
+  }
+
   const response = await fetch(imageUrl);
   const blob = await response.blob();
 

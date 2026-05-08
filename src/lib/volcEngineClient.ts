@@ -203,13 +203,14 @@ async function submitTask(imageBase64: string, prompt: string, accessKeyId: stri
   }
 
   const data = JSON.parse(responseText);
-  if (data.status && data.status !== 10000) {
-    const errorCode = data.status;
+  if (data.code !== 10000) {
+    const errorCode = data.code;
     const errorMessage = data.message || '';
 
-    if (errorCode === 50411 || errorMessage.includes('Risk')) {
+    if (errorCode === 50411 || errorCode === 50518 || errorMessage.includes('Risk')) {
       throw new Error(`IMAGE_RISK: 图片未能通过安全检测，请尝试使用其他图片。`);
     }
+    throw new Error(`API error ${errorCode}: ${errorMessage || responseText}`);
   }
 
   return data;
@@ -259,12 +260,17 @@ async function queryTask(taskId: string, accessKeyId: string, secretAccessKey: s
   });
 
   const responseText = await response.text();
+  const data = JSON.parse(responseText);
 
-  if (!response.ok) {
-    throw new Error(`Query API request failed: ${response.status} ${responseText}`);
+  if (!response.ok || data.code !== 10000) {
+    const errorCode = data.code;
+    const errorMessage = data.message || '';
+    if (errorCode === 50411 || errorCode === 50518 || errorMessage.includes('Risk')) {
+      throw new Error(`IMAGE_RISK: 图片未能通过安全检测，请尝试使用其他图片。`);
+    }
+    throw new Error(`Query API error ${errorCode ?? response.status}: ${errorMessage || responseText}`);
   }
 
-  const data = JSON.parse(responseText);
   return data;
 }
 
@@ -290,14 +296,14 @@ export async function callVolcEngineAI(
 
     const submitResult = await submitTask(imageBase64, prompt, accessKeyId, secretAccessKey);
 
-    if (!submitResult.task_id) {
+    const taskId = submitResult.data?.task_id;
+    if (!taskId) {
       return {
         success: false,
-        error: 'Failed to submit task: no task_id returned'
+        error: `Failed to submit task: no task_id returned. Response: ${JSON.stringify(submitResult)}`
       };
     }
 
-    const taskId = submitResult.task_id;
     console.log('Task submitted, task_id:', taskId);
 
     const maxRetries = 60;
@@ -312,21 +318,29 @@ export async function callVolcEngineAI(
 
       console.log('Query result:', JSON.stringify(queryResult));
 
-      if (queryResult.status === 10000 && queryResult.data && queryResult.data.task_status === 'success') {
-        const imageUrl = queryResult.data.images?.[0]?.url;
+      if (queryResult.code === 10000 && queryResult.data?.status === 'done') {
+        const imageUrl = queryResult.data.image_urls?.[0];
 
         if (imageUrl) {
           onProgress?.(100);
-          return {
-            success: true,
-            imageUrl: imageUrl
-          };
+          return { success: true, imageUrl };
         }
+
+        const base64Data = queryResult.data.binary_data_base64?.[0];
+        if (base64Data) {
+          onProgress?.(100);
+          return { success: true, imageUrl: `data:image/png;base64,${base64Data}` };
+        }
+
+        return {
+          success: false,
+          error: `Task done but no image returned. Response: ${JSON.stringify(queryResult)}`
+        };
       }
 
-      if (queryResult.status !== 10000 || queryResult.data?.task_status === 'failed') {
+      if (queryResult.code !== 10000 || queryResult.data?.status === 'not_found' || queryResult.data?.status === 'expired') {
         const errorMessage = queryResult.message || 'Task failed';
-        throw new Error(errorMessage);
+        throw new Error(`${errorMessage} (code: ${queryResult.code})`);
       }
     }
 
