@@ -37,14 +37,28 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className="text-center">
-            <p className="mb-3 text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words">
-              这个小工具完全免费，做出来只是想分享给同样喜欢拼豆的朋友。
+            <p className="mb-1 sm:mb-2 text-base sm:text-lg text-gray-700 dark:text-gray-100 font-medium tracking-wide">
+              这个小工具完全免费
             </p>
-            <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words">
-              如果用得顺手，欢迎请作者喝一杯奶茶，算是一点心意上的鼓励。
+            <p className="mb-4 sm:mb-5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              做出来只是想分享给同样喜欢拼豆的朋友
             </p>
+
+            <div className="flex items-center justify-center mb-4 sm:mb-5" aria-hidden="true">
+              <span className="h-px w-8 sm:w-10 bg-gradient-to-r from-transparent to-pink-200 dark:to-pink-800" />
+              <span className="mx-2.5 text-pink-300 dark:text-pink-500 text-sm">♡</span>
+              <span className="h-px w-8 sm:w-10 bg-gradient-to-l from-transparent to-pink-200 dark:to-pink-800" />
+            </div>
+
+            <p className="mb-1 text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+              如果用得顺手，欢迎请作者喝一杯奶茶
+            </p>
+            <p className="mb-5 sm:mb-6 text-xs text-gray-400 dark:text-gray-500 italic leading-relaxed">
+              算是一点心意上的鼓励
+            </p>
+
             <div className="flex justify-center mb-4 sm:mb-5">
-              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 p-1 sm:p-2 bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30 rounded-lg shadow-md">
+              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 p-1 sm:p-2 bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100 dark:from-pink-900/30 dark:via-rose-900/20 dark:to-pink-900/30 rounded-xl shadow-md ring-1 ring-pink-100/60 dark:ring-pink-700/30">
                 <Image
                   src="/donation-qr.jpg"
                   alt="赞赏码"
@@ -53,8 +67,8 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
                 />
               </div>
             </div>
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 py-1.5 px-3 sm:py-2 sm:px-4 rounded-full inline-block shadow-sm">
-              微信扫描上方赞赏码，请作者喝一杯奶茶。
+            <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 tracking-[0.3em] uppercase">
+              微信 · 扫一扫
             </p>
           </div>
         </div>
